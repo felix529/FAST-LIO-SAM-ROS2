@@ -3,12 +3,15 @@ fast_lio_sam_node:
     basic.map_frame: "map"
     basic.loop_update_hz: 2.0
     basic.vis_hz: 1.0
+    basic.publish_global_map: true
+    basic.global_map_publish_keyframe_interval: 5
     keyframe.keyframe_threshold: 1.5
     keyframe.nusubmap_keyframes: 5
-    loop.loop_detection_radius: 35.0
-    loop.loop_detection_timediff_threshold: 30.0
+    loop.enable: false
+    loop.loop_detection_radius: 15.0
+    loop.loop_detection_timediff_threshold: 60.0
     icp.icp_voxel_resolution: 0.3
-    icp.icp_score_threshold: 1.5
+    icp.icp_score_threshold: 0.2
     result.save_voxel_resolution: 0.3
     result.save_map_pcd: true
     result.save_map_bag: false

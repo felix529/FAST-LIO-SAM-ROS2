@@ -10,10 +10,13 @@ FastLioSam::FastLioSam(const rclcpp::Node::SharedPtr &node):
     map_frame_ = getParam<std::string>("basic.map_frame", "map");
     loop_update_hz = getParam<double>("basic.loop_update_hz", 1.0);
     vis_hz = getParam<double>("basic.vis_hz", 0.5);
+    global_map_publish_enable_ = getParam<bool>("basic.publish_global_map", true);
+    global_map_publish_keyframe_interval_ = getParam<int>("basic.global_map_publish_keyframe_interval", 5);
     /* keyframe */
     keyframe_thr_ = getParam<double>("keyframe.keyframe_threshold", 1.0);
     lc_config.num_submap_keyframes_ = getParam<int>("keyframe.nusubmap_keyframes", 5);
     /* loop */
+    loop_enable_ = getParam<bool>("loop.enable", false);
     lc_config.loop_detection_radius_ = getParam<double>("loop.loop_detection_radius", 15.0);
     lc_config.loop_detection_timediff_threshold_ = getParam<double>("loop.loop_detection_timediff_threshold", 10.0);
     lc_config.icp_max_corr_dist_ = lc_config.loop_detection_radius_ * 1.5;
@@ -179,6 +182,10 @@ void FastLioSam::odomPcdCallback(const nav_msgs::msg::Odometry::ConstSharedPtr &
 
 void FastLioSam::loopTimerFunc()
 {
+    if (!loop_enable_)
+    {
+        return;
+    }
     if (!is_initialized_ || keyframes_.empty())
     {
         return;
@@ -281,9 +288,14 @@ void FastLioSam::visTimerFunc()
 
     //// 3. global map
     const size_t keyframe_count = keyframes_.size();
-    if (corrected_pcd_map_pub_->get_subscription_count() > 0 &&
+    const bool should_publish_new_map =
+        global_map_vis_switch_ ||
+        (global_map_publish_keyframe_interval_ > 0 &&
+         keyframe_count >= last_published_map_keyframe_count_ + static_cast<size_t>(global_map_publish_keyframe_interval_));
+    if (global_map_publish_enable_ &&
+        corrected_pcd_map_pub_->get_subscription_count() > 0 &&
         keyframe_count > 0 &&
-        (global_map_vis_switch_ || keyframe_count != last_published_map_keyframe_count_))
+        should_publish_new_map)
     {
         pcl::PointCloud<PointType>::Ptr corrected_map(new pcl::PointCloud<PointType>());
         corrected_map->reserve(keyframes_[0].pcd_.size() * keyframe_count); // it's an approximated size

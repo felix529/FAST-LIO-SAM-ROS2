@@ -65,6 +65,8 @@ private:
     std::vector<PosePcd> keyframes_;
     int current_keyframe_idx_ = 0;
     bool is_initialized_ = false;
+    bool loop_enable_ = false;
+    bool global_map_publish_enable_ = true;
     bool loop_added_flag_ = false;
     bool loop_added_flag_vis_ = false;
     std::shared_ptr<gtsam::ISAM2> isam_handler_ = nullptr;
@@ -80,6 +82,7 @@ private:
     nav_msgs::msg::Path odom_path_, corrected_path_;
     bool global_map_vis_switch_ = true;
     size_t last_published_map_keyframe_count_ = 0;
+    int global_map_publish_keyframe_interval_ = 5;
     bool save_map_bag_ = false, save_map_pcd_ = false, save_in_kitti_format_ = false;
 
     rclcpp::Node::SharedPtr node_;
