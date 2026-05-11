@@ -3,4 +3,3 @@
 fast_lio_sam/*.bag
 /fast_lio_sam/result.pcd
 /fast_lio_sam/sequence*/
-third_party/livox_ros_driver/
