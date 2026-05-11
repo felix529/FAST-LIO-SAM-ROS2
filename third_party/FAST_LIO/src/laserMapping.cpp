@@ -145,7 +145,11 @@ std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster;
 
 inline builtin_interfaces::msg::Time stampFromSec(const double sec)
 {
-    return rclcpp::Time(static_cast<int64_t>(sec * 1e9)).to_msg();
+    const int64_t nanoseconds = static_cast<int64_t>(sec * 1e9);
+    builtin_interfaces::msg::Time stamp;
+    stamp.sec = static_cast<int32_t>(nanoseconds / 1000000000LL);
+    stamp.nanosec = static_cast<uint32_t>(nanoseconds % 1000000000LL);
+    return stamp;
 }
 
 void SigHandle(int sig)

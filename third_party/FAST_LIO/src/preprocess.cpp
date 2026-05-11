@@ -771,7 +771,9 @@ void Preprocess::pub_func(PointCloudXYZI &pl, const rclcpp::Time &ct)
   sensor_msgs::msg::PointCloud2 output;
   pcl::toROSMsg(pl, output);
   output.header.frame_id = "livox";
-  output.header.stamp = ct.to_msg();
+  const int64_t nanoseconds = ct.nanoseconds();
+  output.header.stamp.sec = static_cast<int32_t>(nanoseconds / 1000000000LL);
+  output.header.stamp.nanosec = static_cast<uint32_t>(nanoseconds % 1000000000LL);
 }
 
 int Preprocess::plane_judge(const PointCloudXYZI &pl, vector<orgtype> &types, uint i_cur, uint &i_nex, Eigen::Vector3d &curr_direct)
