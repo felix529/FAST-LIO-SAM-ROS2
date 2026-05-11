@@ -66,6 +66,7 @@
 ## How to run
 + Then run (change config files in third_party/`FAST_LIO`)
     ```shell
+    ros2 launch fast_lio_sam run.launch.py lidar:=mid360
     ros2 launch fast_lio_sam run.launch.py lidar:=ouster
     ros2 launch fast_lio_sam run.launch.py lidar:=velodyne
     ros2 launch fast_lio_sam run.launch.py lidar:=livox

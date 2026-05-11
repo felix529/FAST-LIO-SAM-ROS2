@@ -17,11 +17,12 @@ def generate_launch_description():
         'ouster': 'mapping_ouster64.launch.py',
         'velodyne': 'mapping_velodyne.launch.py',
         'livox': 'mapping_avia.launch.py',
+        'mid360': 'mapping_mid360.launch.py',
     }
 
     actions = [
         DeclareLaunchArgument('rviz', default_value='true'),
-        DeclareLaunchArgument('lidar', default_value='ouster'),
+        DeclareLaunchArgument('lidar', default_value='mid360'),
         DeclareLaunchArgument('odom_topic', default_value='/Odometry'),
         DeclareLaunchArgument('lidar_topic', default_value='/cloud_registered'),
         Node(
