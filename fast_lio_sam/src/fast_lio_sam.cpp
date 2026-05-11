@@ -323,8 +323,7 @@ void FastLioSam::saveFlagCallback(const std_msgs::msg::String::SharedPtr msg)
 
         std::ofstream kitti_pose_file(seq_directory + "/poses_kitti.txt");
         std::ofstream tum_pose_file(seq_directory + "/poses_tum.txt");
-        tum_pose_file << "#timestamp x y z qx qy qz qw
-";
+        tum_pose_file << "#timestamp x y z qx qy qz qw\n";
         {
             std::lock_guard<std::mutex> lock(keyframes_mutex_);
             for (size_t i = 0; i < keyframes_.size(); ++i)
@@ -340,8 +339,7 @@ void FastLioSam::saveFlagCallback(const std_msgs::msg::String::SharedPtr msg)
                 kitti_pose_file << pose_(0, 0) << " " << pose_(0, 1) << " " << pose_(0, 2) << " "
                                 << pose_(0, 3) << " " << pose_(1, 0) << " " << pose_(1, 1) << " "
                                 << pose_(1, 2) << " " << pose_(1, 3) << " " << pose_(2, 0) << " "
-                                << pose_(2, 1) << " " << pose_(2, 2) << " " << pose_(2, 3) << "
-";
+                                << pose_(2, 1) << " " << pose_(2, 2) << " " << pose_(2, 3) << "\n";
 
                 const auto &lidar_optim_pose_ = poseEigToPoseStamped(keyframes_[i].pose_corrected_eig_);
                 tum_pose_file << std::fixed << std::setprecision(8) << keyframes_[i].timestamp_
@@ -351,8 +349,7 @@ void FastLioSam::saveFlagCallback(const std_msgs::msg::String::SharedPtr msg)
                               << lidar_optim_pose_.pose.orientation.x << " "
                               << lidar_optim_pose_.pose.orientation.y << " "
                               << lidar_optim_pose_.pose.orientation.z << " "
-                              << lidar_optim_pose_.pose.orientation.w << "
-";
+                              << lidar_optim_pose_.pose.orientation.w << "\n";
             }
         }
         kitti_pose_file.close();
