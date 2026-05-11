@@ -14,8 +14,10 @@ laserMapping:
     mapping.fov_degree: 360.0
     mapping.det_range: 100.0
     mapping.extrinsic_est_en: false
-    mapping.extrinsic_T: [0.0, 0.0, 0.0]
-    mapping.extrinsic_R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+    mapping.extrinsic_T: [-0.038821, 0.114269, -0.025606]
+    mapping.extrinsic_R: [0.944337451, 0.001978690, 0.328972436,
+                          -0.000242826, 0.999985832, -0.005317624,
+                          -0.328978297, 0.004941748, 0.944324552]
     publish.path_en: false
     publish.scan_publish_en: true
     publish.dense_publish_en: true
