@@ -79,6 +79,7 @@ private:
     pcl::PointCloud<pcl::PointXYZ> odoms_, corrected_odoms_;
     nav_msgs::msg::Path odom_path_, corrected_path_;
     bool global_map_vis_switch_ = true;
+    size_t last_published_map_keyframe_count_ = 0;
     bool save_map_bag_ = false, save_map_pcd_ = false, save_in_kitti_format_ = false;
 
     rclcpp::Node::SharedPtr node_;

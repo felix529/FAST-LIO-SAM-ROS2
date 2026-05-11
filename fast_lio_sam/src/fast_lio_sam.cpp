@@ -280,10 +280,13 @@ void FastLioSam::visTimerFunc()
     }
 
     //// 3. global map
-    if (global_map_vis_switch_ && corrected_pcd_map_pub_->get_subscription_count() > 0) // save time, only once
+    const size_t keyframe_count = keyframes_.size();
+    if (corrected_pcd_map_pub_->get_subscription_count() > 0 &&
+        keyframe_count > 0 &&
+        (global_map_vis_switch_ || keyframe_count != last_published_map_keyframe_count_))
     {
         pcl::PointCloud<PointType>::Ptr corrected_map(new pcl::PointCloud<PointType>());
-        corrected_map->reserve(keyframes_[0].pcd_.size() * keyframes_.size()); // it's an approximated size
+        corrected_map->reserve(keyframes_[0].pcd_.size() * keyframe_count); // it's an approximated size
         {
             std::lock_guard<std::mutex> lock(keyframes_mutex_);
             for (size_t i = 0; i < keyframes_.size(); ++i)
@@ -294,10 +297,12 @@ void FastLioSam::visTimerFunc()
         const auto &voxelized_map = voxelizePcd(corrected_map, voxel_res_);
         corrected_pcd_map_pub_->publish(pclToPclRos(*voxelized_map, map_frame_));
         global_map_vis_switch_ = false;
+        last_published_map_keyframe_count_ = keyframe_count;
     }
     if (!global_map_vis_switch_ && corrected_pcd_map_pub_->get_subscription_count() == 0)
     {
         global_map_vis_switch_ = true;
+        last_published_map_keyframe_count_ = 0;
     }
     high_resolution_clock::time_point tv2 = high_resolution_clock::now();
     RCLCPP_INFO(node_->get_logger(), "vis: %.1fms", duration_cast<microseconds>(tv2 - tv1).count() / 1e3);
