@@ -39,7 +39,7 @@
 <br>
 
 ## Dependencies
-+ ROS (it comes with `Eigen` and `PCL`)
++ ROS 2 (tested target: Humble/Jazzy style `ament_cmake` workspace; it comes with `Eigen` and `PCL`)
 + [GTSAM](https://github.com/borglab/gtsam)
     ```shell
     wget -O gtsam.zip https://github.com/borglab/gtsam/archive/refs/tags/4.1.1.zip
@@ -49,31 +49,28 @@
     cmake -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF -DGTSAM_USE_SYSTEM_EIGEN=ON ..
     sudo make install -j16
     ```
++ For Livox LiDARs, this repository vendors `third_party/livox_ros_driver2`, but the Livox SDK2 system library still has to be installed on the Ubuntu machine.
 
 ## How to build
 + Get the code and build
     ```shell
+    mkdir -p ~/your_workspace/src
     cd ~/your_workspace/src
-    git clone https://github.com/engcang/FAST-LIO-SAM --recursive
+    git clone https://github.com/felix529/FAST-LIO-SAM-ROS2.git
 
     cd ..
-    catkin build -DCMAKE_BUILD_TYPE=Release
-    . devel/setup.bash
+    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+    source install/setup.bash
     ```
 
 ## How to run
 + Then run (change config files in third_party/`FAST_LIO`)
     ```shell
-    roslaunch fast_lio_sam run.launch lidar:=ouster
-    roslaunch fast_lio_sam run.launch lidar:=velodyne
-    roslaunch fast_lio_sam run.launch lidar:=livox
+    ros2 launch fast_lio_sam run.launch.py lidar:=ouster
+    ros2 launch fast_lio_sam run.launch.py lidar:=velodyne
+    ros2 launch fast_lio_sam run.launch.py lidar:=livox
     ```
-- In particular, we provide a preset launch option for specific datasets:
-    ```shell
-    roslaunch fast_lio_sam run.launch lidar:=kitti
-    roslaunch fast_lio_sam run.launch lidar:=mulran
-    roslaunch fast_lio_sam run.launch lidar:=newer-college20
-    ```
+- Dataset-specific launch presets from the original ROS 1 repository (`kitti`, `mulran`, `newer-college20`, etc.) still need ROS 2 launch-file ports before use.
 
 <br>
 
