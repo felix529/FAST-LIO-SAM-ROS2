@@ -1,0 +1,24 @@
+laserMapping:
+  ros__parameters:
+    common.lid_topic: "/livox/lidar"
+    common.imu_topic: "/livox/imu"
+    common.time_sync_en: false
+    common.time_offset_lidar_to_imu: 0.0
+    preprocess.lidar_type: 1
+    preprocess.scan_line: 6
+    preprocess.blind: 4.0
+    mapping.acc_cov: 0.1
+    mapping.gyr_cov: 0.1
+    mapping.b_acc_cov: 0.0001
+    mapping.b_gyr_cov: 0.0001
+    mapping.fov_degree: 90.0
+    mapping.det_range: 450.0
+    mapping.extrinsic_est_en: false
+    mapping.extrinsic_T: [0.04165, 0.02326, -0.0284]
+    mapping.extrinsic_R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+    publish.path_en: false
+    publish.scan_publish_en: true
+    publish.dense_publish_en: true
+    publish.scan_bodyframe_pub_en: true
+    pcd_save.pcd_save_en: true
+    pcd_save.interval: -1
