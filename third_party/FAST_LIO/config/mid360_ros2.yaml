@@ -22,5 +22,5 @@ laserMapping:
     publish.scan_publish_en: true
     publish.dense_publish_en: true
     publish.scan_bodyframe_pub_en: true
-    pcd_save.pcd_save_en: true
+    pcd_save.pcd_save_en: false
     pcd_save.interval: -1

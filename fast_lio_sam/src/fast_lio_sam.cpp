@@ -403,21 +403,6 @@ FastLioSam::~FastLioSam()
     {
         RCLCPP_WARN(node_->get_logger(), "save_map_bag is not implemented in this ROS 2 port; use ros2 bag record for bag output.");
     }
-    if (save_map_pcd_)
-    {
-        pcl::PointCloud<PointType>::Ptr corrected_map(new pcl::PointCloud<PointType>());
-        corrected_map->reserve(keyframes_[0].pcd_.size() * keyframes_.size()); // it's an approximated size
-        {
-            std::lock_guard<std::mutex> lock(keyframes_mutex_);
-            for (size_t i = 0; i < keyframes_.size(); ++i)
-            {
-                *corrected_map += transformPcd(keyframes_[i].pcd_, keyframes_[i].pose_corrected_eig_);
-            }
-        }
-        const auto &voxelized_map = voxelizePcd(corrected_map, voxel_res_);
-        pcl::io::savePCDFileASCII<PointType>(package_path_ + "/result.pcd", *voxelized_map);
-        RCLCPP_INFO(node_->get_logger(), "\033[32;1mResult saved in .pcd format!!!\033[0m");
-    }
 }
 
 void FastLioSam::updateOdomsAndPaths(const PosePcd &pose_pcd_in)
